@@ -9,7 +9,7 @@ on ^*:LOGON:*:{
 
 alias -l IRCX.KnownServer {
   var %serverlist irc.irc7.com 13.231.186.19 
-  return $iif($findtok(%serverlist, $server, 0, 32) >= 1, $true, $false)
+  return $iif($findtok(%serverlist, $servertarget, 0, 32) >= 1, $true, $false)
 }
 
 ; $GateKeeper.Write(Version, Sequence, Data)
