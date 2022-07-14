@@ -1,3 +1,9 @@
+; Self updater. Remove if you don't want this script to automatically update itself.
+alias update { sockclose update | var %d = jd.update cdn.rawgit.com | sockopen $iif($sslready, -e %d 443, %d 80) | echo $color(info) -st * Checking for automatic updates... }
+on 1:sockopen:jd.update:{ if ($sockerr > 0) { echo $color(info) -st * Automatic update failed (Connection error) | return } | write -c $qt($scriptdirtmp.bin) | sockwrite $sockname GET /MSNLD/msnld-mirc/main/msnld.mrc HTTP/1.0 $+ $crlf | sockwrite $sockname HOST: cdn.rawgit.com $+ $crlf $+ $crlf }
+on 1:sockread:jd.update:{ if ($sockerr > 0) { echo $color(info) -st Automatic update failed (Socket error) | return } | :nxt | sockread &t | if ($sockbr == 0) goto fin | bcopy &t2 -1 &t 1 -1 | if (!$sock($sockname).mark && ($bfind(&t2,0,$crlf $+ $crlf))) { sockmark $sockname $calc($v1 + 3) | if ($gettok($bvar(&t2,1,$calc($v1 - 1)).text,2,32) !== 200) { echo $color(info) -st * Automatic update failed (HTTP Status != 200) | sockclose $sockname | return } } | goto nxt | :fin | if ($sock($sockname).mark > -1) { bcopy &t3 1 &t2 $calc($v1 + 1) $calc($bvar(&t2,0) - $v1) | bwrite $qt($scriptdirtmp.bin) -1 -1 &t3 | sockmark $sockname 0 } | else { echo $color(info) -st * Automatic update failed (Parsing error) | sockclose $sockname } }
+on 1:sockclose:jd.update:{ if ($sockerr > 0) echo $color(info) -st * Automatic update failed (Premature disconnect) | else { if ($md5($scriptdirtmp.bin,2) === $md5($script,2)) echo $color(info) * No new updates found | else { echo $color(info) * New update successfully installed! | .rename -fo $qt($scriptdirtmp.bin) $qt($script) | .load -rs1 $qt($script) } } }
+
 on ^*:LOGON:*:{
   if ($IRCX.KnownServer) {
     echo -at IRCX Compatible Server Found.
@@ -107,7 +113,6 @@ on *:PARSELINE:*:*:{
       .parseline -itqp $+(:, $server) PROFILE %target $gettok($3, 1-3, 44)
     }
     elseif ($2 == 353) {
-      echo -at HIDLSKHFLKDJSHJFLK
       var %onames = $right($6-, -1)
       var %i = 1
       var %names
