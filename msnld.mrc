@@ -99,6 +99,13 @@ on *:PARSELINE:*:*:{
         .parseline -itu0 $1-
       }
     }
+    elseif ($2 == JOIN) {
+      parseline -it $1-2 $4-
+      var %modes = $gettok($3, 4, 44)
+      var %target = $right($gettok($1, 1, 33), -1)
+      if (%modes) parseline -itq $+(:, $server MODE $right($4, -1) +, $replace(%modes, ., q, @, o, +, v)) $str(%target $+ $chr(32), $len(%modes))
+      parseline -itqp $+(:, $server) PROFILE %target $gettok($3, 1-3, 44)
+    }
   }
 }
 
