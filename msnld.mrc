@@ -109,7 +109,6 @@ on *:PARSELINE:*:*:{
   }
   elseif ($2 == 353) {
     var %onames = $right($6-, -1)
-    echo -at [uers] %onames
     var %i = 1
     var %names
     while (%i <= $numtok(%onames, 32)) {
