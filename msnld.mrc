@@ -2,6 +2,7 @@ on ^*:LOGON:*:{
   if ($IRCX.KnownServer) {
     echo -at IRCX Compatible Server Found.
     haltdef
+    raw -q IRCVERS IRC8 MSN-OCX!9.02.0310.2401 en-us
     Gatekeeper.Send GateKeeper 3 1
   }
 }
