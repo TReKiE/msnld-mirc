@@ -106,20 +106,22 @@ on *:PARSELINE:*:*:{
       if (%modes) .parseline -itq $+(:, $server MODE $right($4, -1) +, $replace(%modes, ., q, @, o, +, v)) $str(%target $+ $chr(32), $len(%modes))
       .parseline -itqp $+(:, $server) PROFILE %target $gettok($3, 1-3, 44)
     }
-  }
-  elseif ($2 == 353) {
-    var %onames = $right($6-, -1)
-    var %i = 1
-    var %names
-    while (%i <= $numtok(%onames, 32)) {
-      var %name = $gettok(%onames, %i, 32)
-      var %profile = $gettok(%name, 1-3, 44)
-      var %target = $gettok(%name, 4, 44)
-      %names = %names %target
-      .parseline -itqp $+(:, $server) PROFILE $remove(%target, ., @, +) %profile
-      inc %i
+    elseif ($2 == 353) {
+      echo -at HIDLSKHFLKDJSHJFLK
+      var %onames = $right($6-, -1)
+      var %i = 1
+      var %names
+      while (%i <= $numtok(%onames, 32)) {
+        var %name = $gettok(%onames, %i, 32)
+        var %profile = $gettok(%name, 1-3, 44)
+        var %target = $gettok(%name, 4, 44)
+        %names = %names %target
+        .parseline -itqp $+(:, $server) PROFILE $remove(%target, ., @, +) %profile
+        inc %i
+      }
+      .parseline -it $1-5 $+(:, %names)
+      return
     }
-    .parseline -it $1-5 $+(:, %names)
   }
 }
 
@@ -183,7 +185,7 @@ alias -l GateKeeper.getGUID {
   ; Version 1 did not support GUIDs
   if ($1 == 1) return
   ; Hardcoded GUID - TODO.
-  return 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+  return 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2
 }
 
 ; Converts a number to mIRC binary representation of an Int32
