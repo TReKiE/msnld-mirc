@@ -100,11 +100,11 @@ on *:PARSELINE:*:*:{
       }
     }
     elseif ($2 == JOIN) {
-      parseline -it $1-2 $4-
+      .parseline -it $1-2 $4-
       var %modes = $gettok($3, 4, 44)
       var %target = $right($gettok($1, 1, 33), -1)
-      if (%modes) parseline -itq $+(:, $server MODE $right($4, -1) +, $replace(%modes, ., q, @, o, +, v)) $str(%target $+ $chr(32), $len(%modes))
-      parseline -itqp $+(:, $server) PROFILE %target $gettok($3, 1-3, 44)
+      if (%modes) .parseline -itq $+(:, $server MODE $right($4, -1) +, $replace(%modes, ., q, @, o, +, v)) $str(%target $+ $chr(32), $len(%modes))
+      .parseline -itqp $+(:, $server) PROFILE %target $gettok($3, 1-3, 44)
     }
   }
   elseif ($2 == 353) {
@@ -116,10 +116,10 @@ on *:PARSELINE:*:*:{
       var %profile = $gettok(%name, 1-3, 44)
       var %target = $gettok(%name, 4, 44)
       %names = %names %target
-      parseline -itqp $+(:, $server) PROFILE $remove(%target, ., @, +) %profile
+      .parseline -itqp $+(:, $server) PROFILE $remove(%target, ., @, +) %profile
       inc %i
     }
-    parseline -it $1-5 $+(:, %names)
+    .parseline -it $1-5 $+(:, %names)
   }
 }
 
