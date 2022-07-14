@@ -107,6 +107,21 @@ on *:PARSELINE:*:*:{
       parseline -itqp $+(:, $server) PROFILE %target $gettok($3, 1-3, 44)
     }
   }
+  elseif ($2 == 353) {
+    var %onames = $right($6-, -1)
+    echo -at [uers] %onames
+    var %i = 1
+    var %names
+    while (%i <= $numtok(%onames, 32)) {
+      var %name = $gettok(%onames, %i, 32)
+      var %profile = $gettok(%name, 1-3, 44)
+      var %target = $gettok(%name, 4, 44)
+      %names = %names %target
+      parseline -itqp $+(:, $server) PROFILE $remove(%target, ., @, +) %profile
+      inc %i
+    }
+    parseline -it $1-5 $+(:, %names)
+  }
 }
 
 raw AUTH:GateKeeper*:{
