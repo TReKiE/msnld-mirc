@@ -183,8 +183,8 @@ alias -l mh.hex2bin {
 alias -l GateKeeper.getGUID {
   ; Version 1 did not support GUIDs
   if ($1 == 1) return
-  ; Hardcoded GUID - TODO.
-  return 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2
+  ; Rough implementation of random GUID
+  return $mh.hex2bin($md5($+($ticks,$window(*,1).hwnd)))
 }
 
 ; Converts a number to mIRC binary representation of an Int32
