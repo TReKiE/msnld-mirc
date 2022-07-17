@@ -170,7 +170,7 @@ alias -l IRCX.binEscape {
   return %result
 }
 
-alias -l IRCX.binUnescape {
+alias IRCX.binUnescape {
   var %i = 1
   var %result
   while (%i <= $numtok($1, 32)) {
