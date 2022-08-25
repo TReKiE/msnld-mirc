@@ -132,7 +132,7 @@ alias -l GateKeeper.getGUID {
   ; Version 1 did not support GUIDs
   if ($1 == 1) return
   ; Semi-persistent GUID 
-  vr %time = $calc($ctime - $uptime(system, 3))
+  var %time = $calc($ctime - $uptime(system, 3))
   return $mh.hex2bin($md5($calc(%time - (%time % 2)) $timezone $daylight))
 }
 
