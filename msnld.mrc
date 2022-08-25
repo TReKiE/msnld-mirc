@@ -101,6 +101,10 @@ alias -l GateKeeper.binSig {
 
 alias GateKeeper.calculate {
   var %x $IRCX.binUnescape($strToBinStr($2-))
+  ;Remove front colon as AdiIRC includes it in the RAW event
+  if ($numtok(%x, 32) == 25 && $gettok(%x,1,32) == 58) {
+    %x = $remtok(%x, 58, 1, 32)
+  }
   var %cur = 1
   var %siglen = $numtok($GateKeeper.binSig, 32)
   var %sig = $gettok(%x, $+(%cur, -, %siglen), 32)
